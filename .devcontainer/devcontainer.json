@@ -1,0 +1,22 @@
+{
+  "name": "Vite React Shopping Cart",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:20",
+  "forwardPorts": [5173],
+  "postCreateCommand": "npm install",
+  "customizations": {
+    "vscode": {
+      "settings": {},
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode"
+      ]
+    }
+  },
+  "portsAttributes": {
+    "5173": {
+      "label": "Vite Dev Server",
+      "onAutoForward": "openBrowser"
+    }
+  },
+  "postStartCommand": "npm run dev"
+}
