@@ -79,6 +79,17 @@ jobs:
       - name: Set image tag in deployment file
         run: |
           sed -i "s|<ACR_LOGIN_SERVER>/shopping-cart-app:BUILD_ID|${{ secrets.ACR_LOGIN_SERVER }}/shopping-cart-app:${{ needs.build.outputs.build_id }}|g" aks-deployment.yaml
+      - name: Enable ACR integration with AKS
+        run: |
+          az aks update -n ${{ secrets.AKS_CLUSTER_NAME }} -g ${{ secrets.AKS_RESOURCE_GROUP }} --attach-acr ${{ secrets.ACR_LOGIN_SERVER }}
+      - name: Create ACR secret for image pull
+        run: |
+          kubectl create secret docker-registry acr-secret \
+            --docker-server=${{ secrets.ACR_LOGIN_SERVER }} \
+            --docker-username=${{ secrets.ACR_USERNAME }} \
+            --docker-password=${{ secrets.ACR_PASSWORD }} \
+            --namespace=${{ secrets.AKS_NAMESPACE }} \
+            --dry-run=client -o yaml | kubectl apply -f -
       - name: Deploy to AKS
         run: kubectl apply -f aks-deployment.yaml -n ${{ secrets.AKS_NAMESPACE }}
       - name: Verify deployment status

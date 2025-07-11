@@ -12,6 +12,8 @@ spec:
       labels:
         app: shopping-cart-app
     spec:
+      imagePullSecrets:
+        - name: acr-secret
       containers:
         - name: shopping-cart-app
           image: <ACR_LOGIN_SERVER>/shopping-cart-app:BUILD_ID
