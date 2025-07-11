@@ -81,3 +81,11 @@ jobs:
           sed -i "s|<ACR_LOGIN_SERVER>/shopping-cart-app:BUILD_ID|${{ secrets.ACR_LOGIN_SERVER }}/shopping-cart-app:${{ needs.build.outputs.build_id }}|g" aks-deployment.yaml
       - name: Deploy to AKS
         run: kubectl apply -f aks-deployment.yaml -n ${{ secrets.AKS_NAMESPACE }}
+      - name: Verify deployment status
+        run: |
+          echo "Waiting for deployment to be ready..."
+          kubectl rollout status deployment/shopping-cart-app -n ${{ secrets.AKS_NAMESPACE }} --timeout=300s
+          echo "Checking pod status..."
+          kubectl get pods -n ${{ secrets.AKS_NAMESPACE }} -l app=shopping-cart-app
+          echo "Checking service status..."
+          kubectl get svc -n ${{ secrets.AKS_NAMESPACE }} shopping-cart-app
