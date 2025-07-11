@@ -31,7 +31,8 @@ function App() {
 
   return (
     <div className="container">
-      <h1>Shopping Cart</h1>
+      <h1>🛒 Shopping Cart App v2.0</h1>
+      <p>Welcome to our modern shopping experience! Browse products and add them to your cart.</p>
       <ProductList products={products} addToCart={addToCart} />
       <Cart cart={cart} removeFromCart={removeFromCart} />
     </div>
